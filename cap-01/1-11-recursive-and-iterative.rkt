@@ -3,19 +3,20 @@
 ; exercise 1.11
 ; recursive process
 
-(define (f n)
+(define (f-recursive n)
   (if (< n 3)
       n
-      (+ (f (- n 1))
-         (* 2 (f (- n 2)))
-         (* 3 (f (- n 3))))))
+      (+ (f-recursive (- n 1))
+         (* 2 (f-recursive (- n 2)))
+         (* 3 (f-recursive (- n 3))))))
 
 ; iterative process
 
 (define (f-iter a b c count)
-  (display )
-  (if (< count 0)
-      ()))
+  ; (println "count: " count " | a: " a ", b: " b ", c: " c)
+  (if (= count 0)
+    c
+    (f-iter (+ (* 3 c) (* 2 b) a) a b (- count 1))))
 
 (define (f n)
   (f-iter 2 1 0 n))

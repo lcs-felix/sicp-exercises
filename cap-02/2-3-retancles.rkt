@@ -2,7 +2,7 @@
 
 (require "2-2-plane-lines.rkt")
 
-; (((2, 2), (2, 4)), ((2, 4), (4, 4)))
+;; (((2, 2), (2, 4)), ((2, 4), (4, 4)))
 
 (define (make-rec height-segment width-segment)
   (cons height-segment width-segment))
@@ -15,6 +15,13 @@
   (let ([width-seg (cdr rectangle)])
     (- (car (cdr width-seg)) (car (car width-seg)))))
 
+;; alternative implementation
+
+;; (2, 2) (2, 4) (4, 4)
+
+(define (make-rec1 bottom-left up-left up-right)
+  (cons (make-segment bottom-left up-left) (make-segment up-left up-right)))
+
 (define (perimeter rectangle)
   (* 2 (+ (calc-height rectangle)
           (calc-width rectangle))))
@@ -24,4 +31,5 @@
      (calc-width rectangle)))
 
 (define rec (make-rec (make-segment (make-point 2 2) (make-point 2 4)) (make-segment (make-point 2 4) (make-point 4 4))))
+;; (define rec (make-rec1 (make-point 2 2) (make-point 2 4) (make-point 4 4)))
 (perimeter rec)

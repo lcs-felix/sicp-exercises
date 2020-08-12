@@ -2,6 +2,8 @@
 
 (require "../math/numeric.rkt")
 
+(provide make-point make-segment)
+
 (define (make-point x y)
   (cons x y))
 

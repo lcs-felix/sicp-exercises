@@ -1,7 +1,6 @@
 #lang racket
 
-(provide gdc)
-(provide abs)
+(provide gdc abs average)
 
 (define (abs n)
   (if (< n 0)
@@ -17,3 +16,14 @@
 
 (define (average v1 v2)
   (/ (+ v1 v2) 2))
+
+(define (zero? n)
+  (= n 0))
+
+(define (dec n)
+  (- n 1))
+
+(define (pow a b)
+  (if (zero? b)
+    1
+    (* a (pow a (dec b)))))

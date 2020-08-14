@@ -1,14 +1,14 @@
 #lang racket
 
-(define (cons x y)
+(define (cons1 x y)
   (lambda (m) (m x y)))
 
-(define (car z)
+(define (car1 z)
   (z (lambda (p q) p)))
 
-(define (cdr z)
+(define (cdr1 z)
   (z (lambda (p q) q)))
 
-(define pair (cons 1 2))
-(car pair)
-(cdr pair)
+(define pair (cons1 1 2))
+(car1 pair)
+(cdr1 pair)

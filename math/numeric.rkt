@@ -1,6 +1,6 @@
 #lang racket
 
-(provide gdc abs average)
+(provide gdc abs average zero? dec pow)
 
 (define (abs n)
   (if (< n 0)

@@ -1,6 +1,6 @@
 #lang racket
 
-(provide gdc abs average zero? dec inc pow)
+(provide gdc abs average zero? dec inc pow square)
 
 (define (abs n)
   (if (< n 0)
@@ -25,6 +25,9 @@
 
 (define (inc n)
   (+ n 1))
+
+(define (square n)
+  (* n n))
 
 (define (pow a b)
   (if (zero? b)

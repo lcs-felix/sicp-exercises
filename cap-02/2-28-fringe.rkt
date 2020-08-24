@@ -1,7 +1,5 @@
 #lang racket
 
-
-
 (define (fringe col)
   (cond [(null? col) '()]
         [(not (pair? (car col))) (cons (car col) (fringe (cdr col)))]

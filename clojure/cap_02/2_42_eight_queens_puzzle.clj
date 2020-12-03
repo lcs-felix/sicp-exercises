@@ -1,4 +1,4 @@
-(ns clojure-tests.eight-queens)
+(ns cap_02.2_42_eight_queens_puzzle)
 
 (def empty-board '())
 

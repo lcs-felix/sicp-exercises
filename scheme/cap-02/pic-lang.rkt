@@ -46,13 +46,12 @@
 
 ;; 2.45
 (define (split side1 side2)
-    (define (op painter n)
-      (if (= n 0)
-          painter
-          (let ([smaller (op painter (- n 1))])
-        (side1 painter (side2 smaller smaller)))))
-  (lambda (painter n)
-    (op painter n)))
+  (define (op painter n)
+    (if (= n 0)
+        painter
+        (let ([smaller (op painter (- n 1))])
+          (side1 painter (side2 smaller smaller)))))
+  op)
 
 (define right-split (split beside below))
 (define up-split (split below beside))
@@ -93,4 +92,39 @@
   (let ([combine4 (square-of-four flip-horiz identity rotate180 flip-vert)])
     (combine4 (corner-split painter n))))
 
-(paint (square-limit wave 4))
+;; (paint (square-limit wave 4))
+
+;; 2.46
+
+(define (make-vect x y)
+  (cons x y))
+
+(define (xcord-vect vect)
+  (car vect))
+
+(define (ycord-vect vect)
+  (cdr vect))
+
+(define (add-vect vec1 vec2)
+  (make-vect (+ (xcord-vect vec1) (xcord-vect vec2))
+             (+ (ycord-vect vec1) (ycord-vect vec2))))
+;; (add-vect (make-vect 3 4) (make-vect 5 -1)) => '(8 . 3)
+
+(define (sub-vect vec1 vec2)
+  (make-vect (- (xcord-vect vec1) (xcord-vect vec2))
+             (- (ycord-vect vec1) (ycord-vect vec2))))
+;; (sub-vect (make-vect 3 2) (make-vect 4 5)) => (-1 . -3)
+
+(define (scale-vect s vect)
+  (make-vect (* s (xcord-vect vect)) (* s (ycord-vect vect))))
+;; (scale-vect 3 (make-vect 7 3)) ;; '(21 . 9)
+
+;; 2.47
+
+(define (frame-coord-map frame)
+  (lambda (v)
+    (add-vect
+     (origin-frame frame)
+     (add-vect (scale-vect (xcor-vect v) (edge1-frame frame))
+               (scale-vect (ycor-vect v) (edge2-frame frame))))))
+

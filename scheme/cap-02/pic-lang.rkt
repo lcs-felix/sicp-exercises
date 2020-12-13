@@ -96,35 +96,67 @@
 
 ;; 2.46
 
-(define (make-vect x y)
-  (cons x y))
+;; (define (make-vect x y)
+;;  (cons x y))
 
-(define (xcord-vect vect)
+(define (xcor-vect vect)
   (car vect))
 
-(define (ycord-vect vect)
+(define (ycor-vect vect)
   (cdr vect))
 
 (define (add-vect vec1 vec2)
-  (make-vect (+ (xcord-vect vec1) (xcord-vect vec2))
-             (+ (ycord-vect vec1) (ycord-vect vec2))))
+  (make-vect (+ (xcor-vect vec1) (xcor-vect vec2))
+             (+ (ycor-vect vec1) (ycor-vect vec2))))
 ;; (add-vect (make-vect 3 4) (make-vect 5 -1)) => '(8 . 3)
 
 (define (sub-vect vec1 vec2)
-  (make-vect (- (xcord-vect vec1) (xcord-vect vec2))
-             (- (ycord-vect vec1) (ycord-vect vec2))))
+  (make-vect (- (xcor-vect vec1) (xcor-vect vec2))
+             (- (ycor-vect vec1) (ycor-vect vec2))))
 ;; (sub-vect (make-vect 3 2) (make-vect 4 5)) => (-1 . -3)
 
 (define (scale-vect s vect)
-  (make-vect (* s (xcord-vect vect)) (* s (ycord-vect vect))))
+  (make-vect (* s (xcor-vect vect)) (* s (ycor-vect vect))))
 ;; (scale-vect 3 (make-vect 7 3)) ;; '(21 . 9)
 
 ;; 2.47
 
-(define (frame-coord-map frame)
-  (lambda (v)
-    (add-vect
-     (origin-frame frame)
-     (add-vect (scale-vect (xcor-vect v) (edge1-frame frame))
-               (scale-vect (ycor-vect v) (edge2-frame frame))))))
+(define (origin-frame frame)
+  (car frame))
 
+(define (edge1-frame frame)
+  (car (cdr frame)))
+
+(define (edge2-frame frame)
+  (car (cdr (cdr frame))))
+
+;; 2.48
+
+(define (make-segment start-point end-segment)
+  (cons start-point end-segment))
+
+(define (start-segment segment)
+  (car segment))
+
+(define (end-segment segment)
+  (cdr segment))
+
+;; 2.49
+
+;; outline of designated frame
+
+(paint (segments->painter (list (make-segment (make-vect 0 0) (make-vect 0 1))
+                                (make-segment (make-vect 0 1) (make-vect 1 1))
+                                (make-segment (make-vect 1 1) (make-vect 1 0))
+                                (make-segment (make-vect 1 0) (make-vect 0 0)))))
+
+;; x
+(paint (segments->painter (list (make-segment (make-vect 0 0) (make-vect 1 1))
+                                (make-segment (make-vect 0 1) (make-vect 1 0)))))
+
+;;
+
+(paint (segments->painter (list (make-segment (make-vect 0 0.5) (make-vect 0.5 1))
+                                (make-segment (make-vect 0.5 1) (make-vect 1 0.5))
+                                (make-segment (make-vect 1 0.5) (make-vect 0.5 0))
+                                (make-segment (make-vect 0.5 0) (make-vect 0 0.5)))))

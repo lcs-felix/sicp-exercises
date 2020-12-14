@@ -5,8 +5,10 @@
   (transform-painter painter
                      (make-vect 1 0)
                      (make-vect 0 0)
-                     (make-vect 0 1)))
+                     (make-vect 1 1)))
 
 
-(paint (flip-vert einstein))
+(paint einstein)
+(paint (flip-horiz einstein))
 (paint (flip-horiz-1 einstein))
+

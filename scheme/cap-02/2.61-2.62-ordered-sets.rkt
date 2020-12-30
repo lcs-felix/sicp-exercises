@@ -20,6 +20,7 @@
 
 ;; 2.62
 
+;; not O(n)
 (define (union-set set1 set2)
   (if (null? set1) 
       set2

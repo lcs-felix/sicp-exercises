@@ -30,21 +30,15 @@
         [else (symbol-exists? symbol (cdr symbols))]))
 
 (define (encode-symbol symbol tree)
-  (define (navigate right left)
-    (cond [(and (leaf? right)
-                (equal? symbol (symbol-leaf right)))
-              '(1)]
-          [(symbol-exists? symbol (symbols right))
-            (cons 1 (navigate (right-branch right) 
-                              (left-branch right)))]
-          [(and (leaf? left)
-                (equal? symbol (symbol-leaf left)))
-            '(0)]
-          [(symbol-exists? symbol (symbols left))
-            (cons 0 (navigate (right-branch left)
-                              (left-branch left)))]))
+  (define (navigate tree)
+    (if (leaf? tree) 
+        '()
+        (let ([left-tree (left-branch tree)])
+          (if (symbol-exists? symbol (symbols left-tree))
+            (cons 0 (navigate (left-branch tree)))
+            (cons 1 (navigate (right-branch tree)))))))
   (if (symbol-exists? symbol (symbols tree))
-      (navigate (right-branch tree) (left-branch tree))
+      (navigate tree)
       (error "symbol does not exists in list" (symbols tree))))
 
 (define (encode message tree)

@@ -1,6 +1,6 @@
 #lang racket
 
-(provide make-leaf make-code-tree decode)
+(provide make-leaf make-code-tree encode decode)
 
 (define (make-leaf symbol weight) (list 'leaf symbol weight))
 (define (leaf? object) (equal? 'leaf (car object)))
@@ -21,8 +21,37 @@
 (define (make-code-tree left right)
   (list left
         right
-        (append left right)
+        (append (symbols left) (symbols right))
         (+ (weight left) (weight right))))
+
+(define (symbol-exists? symbol symbols)
+  (cond [(null? symbols) false]
+        [(equal? symbol (car symbols)) true]
+        [else (symbol-exists? symbol (cdr symbols))]))
+
+(define (encode-symbol symbol tree)
+  (define (navigate right left)
+    (cond [(and (leaf? right)
+                (equal? symbol (symbol-leaf right)))
+              '(1)]
+          [(symbol-exists? symbol (symbols right))
+            (cons 1 (navigate (right-branch right) 
+                              (left-branch right)))]
+          [(and (leaf? left)
+                (equal? symbol (symbol-leaf left)))
+            '(0)]
+          [(symbol-exists? symbol (symbols left))
+            (cons 0 (navigate (right-branch left)
+                              (left-branch left)))]))
+  (if (symbol-exists? symbol (symbols tree))
+      (navigate (right-branch tree) (left-branch tree))
+      (error "symbol does not exists in list" (symbols tree))))
+
+(define (encode message tree)
+  (if (null? message)
+    '()
+    (append (encode-symbol (car message) tree)
+            (encode (cdr message) tree))))
 
 (define (choose-branch bit tree)
   (cond 

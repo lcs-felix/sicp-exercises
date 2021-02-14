@@ -1,6 +1,6 @@
 #lang racket
 
-(provide make-leaf make-code-tree encode decode)
+(provide encode decode make-leaf-set generate-huffman-tree)
 
 (define (make-leaf symbol weight) (list 'leaf symbol weight))
 (define (leaf? object) (equal? 'leaf (car object)))
@@ -79,8 +79,26 @@
       (adjoin-set (make-leaf symbol frequency)
                   (make-leaf-set (cdr pairs))))))
 
+;; from https://jots-jottings.blogspot.com/2011/12/sicp-exercise-269-generating-huffman.html
+(define (successive-merge set)
+  ;; (printf "set: ~a\n" set)
+  (cond [(null? (cdr set)) (car set)]
+        [else (successive-merge
+               (adjoin-set (make-code-tree (car set) (cadr set))
+                           (cddr set)))]))
+
+(define (generate-huffman-tree pairs)
+  (successive-merge (make-leaf-set pairs)))
+
 ;; (make-list 'A 8)
 ;; (leaf? (make-list 'A 8))
 ;; (symbol-leaf (make-list 'A 8))
 ;; (weight-leaf (make-list 'A 8))
-;; (make-leaf-set '((A 4) (B 2) (C 1) (D 1)))
+;; (make-leaf-set '((A 4) (B 2) (D 1) (C 1)))
+
+;; (make-code-tree (make-leaf 'D 1) (make-code-tree (make-leaf 'C 1) (make-leaf 'A 2)))
+
+;; '((leaf A 4)
+;;  ((leaf B 2) ((leaf D 1) (leaf C 1) (D C) 2) (B D C) 4)
+;;  (A B D C)
+;;  8)
